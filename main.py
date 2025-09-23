@@ -12,9 +12,12 @@ while True:
 
     conversation.append({"role": "user", "content": prompt})
     response = client.responses.create(
-        model="gpt-5o-nano",
+        model="gpt-4o-mini",
         input=conversation,
+        stream=True
     )
-    conversation.append({"role":"assistant","content":response.output_text})
+    # conversation.append({"role":"assistant","content":response.output_text})
 
-    print(response.output_text)
+    for event in response:
+        if event.type == "response.output_text.delta":
+            print(event.delta, end="")
