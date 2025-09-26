@@ -1,0 +1,1 @@
+export const HR_UPDATE_MS = 2000;

@@ -1,0 +1,127 @@
+<html lang="en" class="sl-theme-dark h-full">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://studio.d-id.com/favicon/favicon-192x192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.plot.ly/plotly-3.1.0.min.js" charset="utf-8"></script>
+  <title>CRED Fitness</title>
+  <style>
+    .video-stack {
+      position: relative
+    }
+
+    .video-stack video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 250ms ease
+    }
+  </style>
+</head>
+
+<body class="bg-neutral-950 text-neutral-100 font-[Manrope] h-full">
+  <div class="grid h-svh grid-cols-3 grid-rows-6 gap-4 p-4">
+    <main class="col-span-2 row-span-6 grid grid-cols-2 grid-rows-6 gap-4 min-h-0">
+      <section
+        class="col-span-2 row-start-1 row-span-3 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-3 grid grid-cols-3 gap-3 min-h-48 h-full">
+        <div class="col-span-2 flex flex-col min-h-0">
+          <div class="px-2 pt-1 text-sm font-semibold">Your AI Coach</div>
+          <div id="video-wrapper" class="relative flex-1 video-stack rounded-xl overflow-hidden">
+            <video id="streamVideoElement" autoplay loop style="opacity:1;"></video>
+            <video id="idleVideoElement" autoplay loop style="opacity:0;"></video>
+          </div>
+        </div>
+        <div
+          class="col-span-1 rounded-2xl border border-sky-700/40 bg-gradient-to-br from-sky-700/30 to-cyan-600/30 p-3 text-xs">
+          Side Block
+        </div>
+      </section>
+      <section
+        class="col-start-1 row-start-4 row-span-1 rounded-2xl border border-fuchsia-700/40 bg-gradient-to-br from-fuchsia-700/30 to-violet-600/30 p-4">
+        <h2 class="text-sm font-semibold">Block A</h2>
+        <p class="mt-1 text-xs text-neutral-300">(row 4, col 1)</p>
+      </section>
+      <section
+        class="col-start-2 row-start-4 row-span-2 rounded-2xl border border-sky-700/40 bg-gradient-to-br from-sky-700/30 to-cyan-600/30 p-4">
+        <div id="hrChart" class="w-full h-full min-h-48 rounded-xl overflow-hidden">
+          <!-- Chart will be rendered here -->
+        </div>
+      </section>
+      <section
+        class="col-start-1 row-start-5 rounded-2xl border border-emerald-700/40 bg-gradient-to-br from-emerald-700/30 to-lime-600/30 p-4">
+        <h2 class="text-sm font-semibold">Block C</h2>
+        <p class="mt-1 text-xs text-neutral-300">(row 5, col 1)</p>
+      </section>
+      <section
+        class="col-start-1 row-start-6 rounded-2xl border border-amber-700/40 bg-gradient-to-br from-amber-700/30 to-orange-600/30 p-4">
+        <h2 class="text-sm font-semibold">Block D</h2>
+        <p class="mt-1 text-xs text-neutral-300">(row 6, col 1)</p>
+      </section>
+      <section
+        class="col-start-2 row-start-6 rounded-2xl border border-rose-700/40 bg-gradient-to-br from-rose-700/30 to-pink-600/30 p-4">
+        <h2 class="text-sm font-semibold">Block E</h2>
+        <p class="mt-1 text-xs text-neutral-300">(row 6, col 2)</p>
+      </section>
+    </main>
+    <aside class="flex col-start-3 row-span-6 min-h-0 rounded-2xl border border-neutral-800 bg-neutral-900/60">
+      <div class="flex w-full min-h-0 flex-col">
+        <div class="flex items-center justify-between border-b border-neutral-800 px-4 py-3">
+          <h2 class="text-sm font-semibold">Chat History</h2>
+        </div>
+        <div id="answersList" class="flex-1 overflow-y-auto p-3 space-y-2">
+          <!-- Chat messages will be appended here -->
+        </div>
+        <div class="border-t border-neutral-800 p-3">
+          <div class="flex items-end gap-2">
+            <textarea id="textArea" placeholder="Start chatting with your AI coach..." autofocus
+              class="min-h-24 max-h-32 flex-1 resize-y rounded-2xl border border-neutral-800 bg-neutral-800/70 px-3 py-2 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-sky-500/40"></textarea>
+            <button id="speechButton"
+              class="grid size-12 place-items-center rounded-full bg-sky-600 text-white hover:bg-sky-500"
+              title="Speech to Text">
+              <span class="material-symbols-outlined text-base">mic</span>
+            </button>
+            <button id="actionButton"
+              class="grid size-12 place-items-center rounded-full bg-sky-600 text-white hover:bg-sky-500"
+              title="Send Message">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 26 27" fill="currentColor"
+                aria-hidden="true">
+                <path
+                  d="M10.8753 20.9288L15.8809 18.3172C20.2537 16.0357 22.4402 14.895 22.4402 13.0885C22.4402 11.2821 20.2537 10.1413 15.8809 7.85984L10.8753 5.24821C7.34598 3.40683 5.58133 2.48614 4.5583 2.76876C3.58508 3.03761 2.82497 3.83076 2.56732 4.84629C2.29649 5.91381 3.17881 7.75518 4.94346 11.4379C5.16215 11.8943 5.60928 12.198 6.09829 12.2003L14.0891 12.2391C14.5386 12.2413 14.9014 12.6234 14.8993 13.0925C14.8972 13.5616 14.531 13.9401 14.0815 13.9379L6.21975 13.8997C5.68076 13.8971 5.1845 14.2361 4.94346 14.7391C3.17882 18.4218 2.29648 20.2632 2.56732 21.3307C2.82497 22.3463 3.58507 23.1394 4.5583 23.4083C5.58133 23.6909 7.34599 22.7702 10.8753 20.9288Z" />
+              </svg>
+            </button>
+            <button id="interruptButton"
+              class="grid size-12 place-items-center rounded-full border border-neutral-800 bg-black" title="Interrupt"
+              hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+                <path
+                  d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z"
+                  stroke="currentcolor" stroke-width="1.5" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div id="hidden" style="display:none;">
+      <h2 id="hidden_h2"></h2>
+      <br />
+      <h3>Want to continue where we left off?</h3>
+      <br /><button id="reconnectButton" class="rounded-full bg-neutral-800 px-4 py-2 text-sm"
+        title="Reconnects the previous WebRTC session">Let's
+        continue</button>
+    </div>
+  </div>
+  <script type="module" src="/main.js"></script>
+  <script src="/webSpeechAPI.js"></script>
+</body>
+
+</html>
