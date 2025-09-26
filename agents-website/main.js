@@ -9,6 +9,7 @@ import { getGptResponse } from './backend.js';
 // Import widgets here
 import { initHRChart, wireSensors, pushHR } from './widgets/heartRate.js';
 import { initHIITChart } from './widgets/training.js';
+import { initKeyframeLoop } from './widgets/animator.js';
 
 // 2. Paste the 'data-client-key' in the 'auth.clientKey' variable
 // (The client-key can be fetched via the Agent embed in D-ID Studio or via the API - Create Client Key Endpoint )
@@ -37,7 +38,16 @@ initHRChart(); wireSensors(pushHR);
 
 // Training Chart
 initHIITChart("trainingChart");
-initTrainingInfoChart("trainingInfo");
+// initTrainingInfoChart("trainingInfo");
+initKeyframeLoop('#keyframeImg',
+    [
+        { src: './widgets/animations/burpees/0.png', holdMs: 500 },
+        { src: './widgets/animations/burpees/1.png', holdMs: 500 },
+        { src: './widgets/animations/burpees/2.png', holdMs: 500 },
+        { src: './widgets/animations/burpees/3.png', holdMs: 500 },
+        { src: './widgets/animations/burpees/4.png', holdMs: 500 },
+        { src: './widgets/animations/burpees/5.png', holdMs: 500 },
+    ], { fadeMs: 0, autoplay: true });
 
 // Define the SDK callbacks functions here
 const callbacks = {
