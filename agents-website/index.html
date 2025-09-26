@@ -62,11 +62,11 @@
           <!-- Chart will be rendered here -->
         </div>
       </section>
-      <section class="col-start-1 h-20 rounded-2xl bg-gradient-to-br from-amber-700/30 to-orange-600/30 p-0">
+      <section>
         <div class="w-full h-full">
           <!-- NOW PLAYING CARD -->
           <sl-card
-            class="sl-theme-dark block bg-[#0f141b]/00 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-lg">
+            class="block border border-white/30 rounded-2xl overflow-hidden shadow-lg">
             <div class="pt-3 p-6">
               <!-- Header: title + meta -->
               <div class="flex items-start justify-between gap-1">
@@ -89,9 +89,14 @@
               <!-- Main row: details -->
               <div class="mt-5 grid grid-cols-[auto,1fr] gap-4 items-center">
                 <!-- Current exercise & intensity -->
-                <div class="mt-4">
+                <div class="mt-2">
                   <div class="text-[11px] uppercase tracking-wider text-slate-400">Now</div>
-                  <div id="exercise" class="text-xl sm:text-2xl font-bold leading-tight">Burpees</div>
+                  <div class="text-xl sm:text-2xl font-bold leading-tight">
+                    <span id="exercise">Burpees</span>
+                    <sl-progress-ring value="80" class="inline-block align-middle"
+                      style="--size: 30px; --track-width: 12px; --indicator-width: 6px;">
+                    </sl-progress-ring>
+                  </div>
 
                   <div class="mt-2 flex items-center gap-2">
                     <span id="intensityBadge" class="chip">Intensity: LOW</span>
