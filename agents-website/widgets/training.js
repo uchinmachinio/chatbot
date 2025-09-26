@@ -131,7 +131,6 @@ export function initHIITChart(containerId) {
                 dtick: tick,
                 gridcolor: 'rgba(255,255,255,0.06)',
                 tickfont: { color: '#9ca3af' },
-                
                 zeroline: false
             },
             yaxis: {

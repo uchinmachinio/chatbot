@@ -22,7 +22,7 @@ export function initHRChart() {
         fill: "tozeroy", fillcolor: "rgba(56,189,248,0.15)",
         type: "scatter"
     };
-    Plotly.newPlot(chartEl, [trace], layout, { displaylogo: false, responsive: true, scrollZoom: false });
+    Plotly.newPlot(chartEl, [trace], layout, { displaylogo: false, responsive: true, displayModeBar: false, });
     const ro = new ResizeObserver(() => Plotly.Plots.resize(chartEl)); ro.observe(chartEl);
 }
 

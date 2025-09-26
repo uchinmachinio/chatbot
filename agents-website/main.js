@@ -1,7 +1,3 @@
-// CSS import
-import '@shoelace-style/shoelace/dist/themes/dark.css';
-import '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
-
 // 1. Import the Agents SDK library
 import { createAgentManager, StreamType } from '@d-id/client-sdk';
 import { getGptResponse } from './backend.js';
@@ -10,6 +6,7 @@ import { getGptResponse } from './backend.js';
 import { initHRChart, wireSensors, pushHR } from './widgets/heartRate.js';
 import { initHIITChart } from './widgets/training.js';
 import { initKeyframeLoop } from './widgets/animator.js';
+import { initHeartBeat } from './widgets/heartbeat.js';
 
 // 2. Paste the 'data-client-key' in the 'auth.clientKey' variable
 // (The client-key can be fetched via the Agent embed in D-ID Studio or via the API - Create Client Key Endpoint )
@@ -38,6 +35,7 @@ initHRChart(); wireSensors(pushHR);
 
 // Training Chart
 initHIITChart("trainingChart");
+initHeartBeat("hrNow", "heartIcon")
 // initTrainingInfoChart("trainingInfo");
 initKeyframeLoop('#keyframeImg',
     [
