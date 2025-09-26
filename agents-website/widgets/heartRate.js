@@ -2,17 +2,17 @@ import { HR_UPDATE_MS } from './sensors.js';
 
 const Plotly = window.Plotly;
 const chartEl = document.getElementById("hrChart");
-const windowSec = 60, tickSec = 30, maxPoints = 2000;
+const windowSec = 30, tickSec = 30, maxPoints = 2000;
 let t0 = Date.now(), lastX = 0, lastBpm = 72, raf = 0, q = [];
 
 export function initHRChart() {
     const layout = {
         paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)",
-        margin: { l: 40, r: 16, t: 8, b: 28 },
+        margin: { l: 20, r: 16, t: 8, b: 28 },
         xaxis: { type: "linear", range: [0, windowSec], autorange: false, tickmode: "linear", dtick: tickSec, tick0: 0, ticksuffix: " s", gridcolor: "rgba(255,255,255,0.06)", tickfont: { color: "#9ca3af" } },
         yaxis: { title: "BPM", range: [lastBpm - 10, lastBpm + 10], gridcolor: "rgba(255,255,255,0.06)", ticksuffix: " ", tickfont: { color: "#9ca3af" }, titlefont: { color: "#9ca3af" } },
         font: { color: "#e5e7eb" }, uirevision: "stream", showlegend: false,
-        title: { text: "HR ♡", font: { color: "#9ca3af" }, xref: "paper", x: 0.05, y: 0.95 }
+        // title: { text: "", font: { color: "#9ca3af" }, xref: "paper", x: 0.05, y: 0.95 }
     };
     const trace = {
         x: [-2, -1, 0], y: [70, 70, 70],
@@ -22,7 +22,7 @@ export function initHRChart() {
         fill: "tozeroy", fillcolor: "rgba(56,189,248,0.15)",
         type: "scatter"
     };
-    Plotly.newPlot(chartEl, [trace], layout, { displaylogo: false, responsive: true, displayModeBar: false, });
+    Plotly.newPlot(chartEl, [trace], layout, { displaylogo: false, responsive: false, displayModeBar: false, scrollZoom: false});
     const ro = new ResizeObserver(() => Plotly.Plots.resize(chartEl)); ro.observe(chartEl);
 }
 
