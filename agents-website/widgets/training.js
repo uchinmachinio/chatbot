@@ -34,7 +34,10 @@ export function initHIITChart(containerId) {
 
     // Build flattened segments (repeat the block for N rounds, then cooldown) =====
     function buildSegments(w) {
-        const colors = { work: 'rgba(191, 97, 35, 1)', rest: 'rgba(0, 255, 42, 1)', cooldown: 'rgba(40, 106, 167, 1)' };
+        const colors = { 
+            work: '#EE4266', 
+            rest: '#FFD23F', 
+            cooldown: '#3BCEAC' };
         const isWork = (name, intensity) =>
             intensity === 'high' && name.toLowerCase() !== 'rest';
 
