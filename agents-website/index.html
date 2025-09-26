@@ -45,9 +45,10 @@
         </div>
       </section>
       <section
-        class="col-start-1 row-start-4 row-span-1 rounded-2xl border border-fuchsia-700/40 bg-gradient-to-br from-fuchsia-700/30 to-violet-600/30 p-4">
-        <h2 class="text-sm font-semibold">Block A</h2>
-        <p class="mt-1 text-xs text-neutral-300">(row 4, col 1)</p>
+        class="col-start-1 row-start-4 row-span-1 rounded-2xl border border-emerald-700/40 bg-gradient-to-br from-emerald-700/30 to-lime-600/30 p-2">
+        <div id="trainingChart" class="w-full h-full">
+          <!-- Chart will be rendered here -->
+        </div>
       </section>
       <section
         class="col-start-2 row-start-4 row-span-2 rounded-2xl border border-sky-700/40 bg-gradient-to-br from-sky-700/30 to-cyan-600/30 p-4">
@@ -55,15 +56,58 @@
           <!-- Chart will be rendered here -->
         </div>
       </section>
-      <section
-        class="col-start-1 row-start-5 rounded-2xl border border-emerald-700/40 bg-gradient-to-br from-emerald-700/30 to-lime-600/30 p-4">
-        <h2 class="text-sm font-semibold">Block C</h2>
-        <p class="mt-1 text-xs text-neutral-300">(row 5, col 1)</p>
-      </section>
-      <section
-        class="col-start-1 row-start-6 rounded-2xl border border-amber-700/40 bg-gradient-to-br from-amber-700/30 to-orange-600/30 p-4">
-        <h2 class="text-sm font-semibold">Block D</h2>
-        <p class="mt-1 text-xs text-neutral-300">(row 6, col 1)</p>
+      <section class="col-start-1 h-20 rounded-2xl bg-gradient-to-br from-amber-700/30 to-orange-600/30 p-0">
+        <div class="w-full h-full">
+          <!-- NOW PLAYING CARD -->
+          <sl-card
+            class="sl-theme-dark block bg-[#0f141b]/00 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-lg">
+            <div class="pt-3 p-6">
+              <!-- Header: title + meta -->
+              <div class="flex items-start justify-between gap-1">
+                <div>
+                  <h2 id="title" class="text-lg sm:text-xl font-semibold tracking-tight">High Intensity Interval
+                    Training</h2>
+                  <div class="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                    <span id="duration" class="chip bg-white/5">⏱️ <span class="tabular-nums">20</span></span>
+                    <span id="rounds" class="chip bg-white/5">🔁 <span class="tabular-nums">4</span></span>
+                    <span id="type" class="chip bg-white/5">🏷️ <span></span>HIIT</span>
+                  </div>
+                </div>
+                <!-- Round progress compact -->
+                <div class="text-right">
+                  <div class="text-[10px] uppercase tracking-wider text-slate-400">Round</div>
+                  <div id="roundProgress" class="text-sm font-semibold">1 / 4</div>
+                </div>
+              </div>
+
+              <!-- Main row: timer ring + details -->
+              <div class="mt-5 grid grid-cols-[auto,1fr] gap-4 items-center">
+                <!-- Stylized ring timer -->
+                <sl-progress-ring value="50" style="--track-width: 6px; --indicator-width: 12px;"></sl-progress-ring>
+
+
+                <!-- Current exercise & intensity -->
+                <div>
+                  <div class="text-[11px] uppercase tracking-wider text-slate-400">Now</div>
+                  <div id="exercise" class="text-xl sm:text-2xl font-bold leading-tight">Burpees</div>
+
+                  <div class="mt-2 flex items-center gap-2">
+                    <span id="intensityBadge" class="chip">Intensity: LOW</span>
+                    <span class="text-xs text-slate-400">Remaining:</span>
+                    <span id="timeLeft" class="text-lg font-semibold tabular-nums">00:40</span>
+                  </div>
+
+                  <!-- Mini metadata row -->
+                  <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                    <span id="equip" class="chip bg-white/5">🏋️‍♂️ bodyweight</span>
+                    <span id="zones" class="chip bg-white/5">💪 cardio • legs • core</span>
+                    <span id="goal" class="chip bg-white/5">🎯 goal: fat_burn</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sl-card>
+        </div>
       </section>
       <section
         class="col-start-2 row-start-6 rounded-2xl border border-rose-700/40 bg-gradient-to-br from-rose-700/30 to-pink-600/30 p-4">
