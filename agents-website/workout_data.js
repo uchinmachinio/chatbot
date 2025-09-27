@@ -2,7 +2,7 @@ export const workout = {
     "workout_type": "HIIT",
     "title": "Full Body HIIT Blast",
     "duration_min": 20,
-    "rounds": 4,
+    "rounds": 2,
     "intervals": [
         {
             "round": 1,

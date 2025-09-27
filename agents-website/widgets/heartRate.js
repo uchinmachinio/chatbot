@@ -9,7 +9,7 @@ let t0 = Date.now(), lastX = 0, lastBpm = 72, raf = 0, q = [];
 export function initHRChart() {
     const layout = {
         paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)",
-        margin: { l: 20, r: 16, t: 8, b: 28 },
+        margin: { l: 30, r: 16, t: 8, b: 28 },
         xaxis: { type: "linear", range: [0, windowSec], autorange: false, tickmode: "linear", dtick: tickSec, tick0: 0, ticksuffix: " s", gridcolor: "rgba(255,255,255,0.06)", tickfont: { color: "#9ca3af" } },
         yaxis: { title: "BPM", range: [lastBpm - 10, lastBpm + 10], gridcolor: "rgba(255,255,255,0.06)", ticksuffix: " ", tickfont: { color: "#9ca3af" }, titlefont: { color: "#9ca3af" } },
         font: { color: "#e5e7eb" }, uirevision: "stream", showlegend: false,

@@ -18,7 +18,7 @@ export function initTrainingInfoChart(containerId) {
         let totalSec = Math.round((e.detail.total_ms || (durationMin * 60 * 1000)) / 1000);
         let rounds = e.detail.rounds || 1;
 
-        exerciseEl.textContent = "smoethig";
+        exerciseEl.textContent = workout.intervals[0]?.block[0]?.exercise || "Exercise";
         titleEl.textContent = workoutTitle;
         typeEl.textContent = workoutType;
         roundsEl.textContent = rounds;
