@@ -99,51 +99,167 @@
       </div>
     </div>
 
-    <!-- Step Progress Bar (Right) -->
-    <div
-      class="col-span-3 rounded-lg border border-white/10 bg-neutral-900/60 shadow-lg flex items-center justify-center backdrop-blur-sm">
-      <div class="flex flex-col items-start justify-start space-y-25 h-full pt-8">
+    <!-- Profile Status (Right) -->
+    <div class="col-span-3 rounded-lg border border-white/10 bg-neutral-900/60 shadow-lg backdrop-blur-sm">
 
-        <!-- Step 1 (active) -->
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">
-            1</div>
-          <span class="text-neutral-100 font-medium">Basics</span>
-        </div>
+      <!-- Tiny CSS for micro-animations + dashed "missing" pills -->
+      <style>
+        @keyframes pop-in {
+          0% {
+            transform: scale(.95);
+            opacity: 0
+          }
 
-        <!-- Step 2 -->
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300 text-sm font-bold">
-            2</div>
-          <span class="text-neutral-300">Health & Lifestyle</span>
-        </div>
+          100% {
+            transform: scale(1);
+            opacity: 1
+          }
+        }
 
-        <!-- Step 3 -->
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300 text-sm font-bold">
-            3</div>
-          <span class="text-neutral-300">Goals & Preferences</span>
-        </div>
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0
+          }
 
-        <!-- Step 4 -->
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300 text-sm font-bold">
-            4</div>
-          <span class="text-neutral-300">Schedule</span>
-        </div>
+          100% {
+            background-position: 200% 0
+          }
+        }
 
-        <!-- Step 5 -->
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300 text-sm font-bold">
-            5</div>
-          <span class="text-neutral-300">Nutrition & Wellness</span>
+        .pop-in {
+          animation: pop-in 220ms cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .tag-missing {
+          border: 1px dashed rgba(255, 255, 255, .25);
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.06));
+          background-size: 200% 100%;
+          animation: shimmer 1.6s linear infinite;
+        }
+
+        .tagged {
+          border: 2px dashed rgba(0, 162, 255, 0.52);
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.06));
+          background-size: 200% 100%;
+          animation: shimmer 1.6s linear infinite;
+        }
+      </style>
+
+      <!-- Header -->
+      <div class="px-4 pt-4 pb-3 border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <sl-icon name="person" class="text-neutral-300"></sl-icon>
+          <h3 class="text-neutral-100 font-semibold tracking-tight">User Workout Profile</h3>
         </div>
       </div>
+
+      <!-- Steps + content -->
+      <div class="p-4 space-y-6">
+        <!-- Fields (Schema: complete coverage) -->
+        <div class="space-y-5">
+          <!-- 0. Name -->
+          <section class="space-y-2">
+            <div id="basics" class="flex items-center gap-2 text-lg uppercase tracking-wider text-neutral-400">
+              <sl-icon name="person-circle" class="opacity-70"></sl-icon> Basics
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <sl-badge pill variant="primary" class="pop-in" data-field="name">Name: Luka</sl-badge>
+              <sl-badge pill variant="primary" class="pop-in" data-field="age">Age: 29</sl-badge>
+              <sl-badge pill variant="primary" class="pop-in" data-field="heightCm">Height: 183 cm</sl-badge>
+              <sl-badge pill variant="primary" class="pop-in" data-field="weightKg">Weight: 82 kg</sl-badge>
+              <!-- If missing, swap one out for the dashed version:
+          <sl-badge pill class="tag-missing text-neutral-300" data-field="weightKg">Weight: Not set</sl-badge>
+          -->
+            </div>
+          </section>
+
+          <!-- 2. Current fitness level -->
+          <section class="space-y-2">
+            <div id="fitness" class="flex items-center gap-2 text-lg uppercase tracking-wider text-neutral-400">
+              <sl-icon name="activity" class="opacity-70"></sl-icon> Fitness Level
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <sl-badge pill variant="primary" class="pop-in" data-field="fitnessLevel">intermediate</sl-badge>
+              <!-- Missing:
+          <sl-badge pill class="tag-missing text-neutral-300" data-field="fitnessLevel">Not set</sl-badge>
+          -->
+            </div>
+          </section>
+
+          <!-- 3. Lifestyle -->
+          <section class="space-y-2">
+            <div id="lifestyle" class="flex items-center gap-2 text-lg uppercase tracking-wider text-neutral-400">
+              <sl-icon name="briefcase" class="opacity-70"></sl-icon> Lifestyle
+            </div>
+            <div class="flex flex-wrap gap-2" data-field="lifestyle">
+              <sl-badge pill variant="primary" class="pop-in">mixed</sl-badge>
+              <sl-badge pill variant="primary" class="pop-in">office_work</sl-badge>
+              <!-- If null:
+          <sl-badge pill class="tag-missing text-neutral-300">Not set</sl-badge>
+          -->
+            </div>
+          </section>
+
+          <!-- 4. Fitness goals + timeline -->
+          <section class="space-y-2">
+            <div id="goals" class="flex items-center gap-2 text-lg uppercase tracking-wider text-neutral-400">
+              <sl-icon name="trophy" class="opacity-70"></sl-icon> Goals & Timeline
+            </div>
+            <div class="flex flex-wrap gap-2" data-field="goals">
+              <sl-badge pill variant="primary" class="pop-in">muscle_gain</sl-badge>
+              <sl-badge pill variant="primary" class="pop-in">mobility_flexibility</sl-badge>
+              <!-- Missing goals example:
+          <sl-badge pill class="tag-missing text-neutral-300">No goals yet</sl-badge>
+          -->
+            </div>
+            <div class="flex flex-wrap gap-2" data-field="targetTimelineWeeks">
+              <sl-badge pill variant="primary" class="pop-in">
+                <sl-icon name="hourglass-split" class="mr-1"></sl-icon>
+                Target: 16 weeks
+              </sl-badge>
+              <!-- Missing:
+          <sl-badge pill class="tag-missing text-neutral-300">Timeline: Not set</sl-badge>
+          -->
+            </div>
+          </section>
+
+          <!-- 5. Preferred workout style + equipment -->
+          <section class="space-y-2">
+            <div id="preferences" class="flex items-center gap-2 text-lg uppercase tracking-wider text-neutral-400">
+              <sl-icon name="sliders" class="opacity-70"></sl-icon> Preferences
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="flex flex-wrap gap-2" data-field="preferredStyles">
+                <sl-badge pill variant="primary" class="pop-in">strength_training</sl-badge>
+                <sl-badge pill variant="primary" class="pop-in">hiit</sl-badge>
+                <!-- Missing:
+            <sl-badge pill class="tag-missing text-neutral-300">No styles selected</sl-badge>
+            -->
+              </div>
+              <div class="flex flex-wrap gap-2" data-field="equipmentAvailable">
+                <sl-badge pill variant="primary" class="pop-in">adjustable dumbbells</sl-badge>
+                <sl-badge pill variant="primary" class="pop-in">pull-up bar</sl-badge>
+                <sl-badge pill variant="primary" class="pop-in">resistance bands</sl-badge>
+                <!-- Missing:
+            <sl-badge pill class="tag-missing text-neutral-300">No equipment listed</sl-badge>
+            -->
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Legend -->
+        <!-- <div class="pt-2 border-t border-white/10 text-[11px] text-neutral-400 flex items-center gap-3">
+          <sl-badge pill size="small" variant="primary">filled</sl-badge>
+          <sl-badge pill size="small" class="tag-missing text-neutral-300">not set</sl-badge>
+          <span class="ml-auto">Tip: animate new tags with <code>.pop-in</code></span>
+        </div> -->
+
+      </div>
     </div>
+  </div>
+  </div>
 
   </div>
   <div id="hidden" style="display:none;">
@@ -156,8 +272,17 @@
   </div>
   <!-- Questionnaire Scripts here-->
   <script type="module" src="./questionnaire_video.js" defer></script>
-  <script src="/questionnaire.js"></script>
+  <script type="module" src="/questionnaire.js"></script>
   <script src="/webSpeechAPI.js"></script>
+  <script type="module">
+    import { renderUserWorkoutProfile, exampleFilledProfile, demo } from "./renderProfile.js";
+
+    // Render something right away:
+    // renderUserWorkoutProfile(exampleFilledProfile);
+
+    // Or run demo to test
+    demo();
+  </script>
 </body>
 
 </html>

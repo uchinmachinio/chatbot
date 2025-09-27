@@ -1,6 +1,7 @@
 // 1. Import the Agents SDK library
 import { createAgentManager, StreamType } from '@d-id/client-sdk';
-import { getGptResponse, getStructuredResponse } from './questionnaire.js';
+import { getGptResponse, getStructuredResponse, UserWorkoutProfile } from './questionnaire.js';
+import { renderUserWorkoutProfile } from './renderProfile.js';
 
 // 2. Paste the 'data-client-key' in the 'auth.clientKey' variable
 // (The client-key can be fetched via the Agent embed in D-ID Studio or via the API - Create Client Key Endpoint )
@@ -59,7 +60,7 @@ const callbacks = {
             document.addEventListener('keydown', (event) => { if (event.key === 'Tab') { event.preventDefault(); switchModes() } })
             actionButton.removeAttribute("disabled")
             speechButton.removeAttribute("disabled")
-            answers.innerHTML += `<div class="rounded-xl bg-neutral-800/60 p-3 text-xs">${agentManager.agent.greetings[0]}</div>`
+            answers.innerHTML += `<div class="rounded-xl bg-neutral-800/60 p-3 text-lg">${agentManager.agent.greetings[0]}</div>`
             if (streamType !== StreamType.Fluent) {
                 videoWrapper.style.filter = "blur(0px)"
             }
@@ -112,7 +113,7 @@ const callbacks = {
         if (msg.role == "assistant" && type == "answer") {
             if (msg.id && renderedMessageIds.has(msg.id)) return;
             if (msg.id) renderedMessageIds.add(msg.id);
-            answers.innerHTML += `<div class="mr-auto rounded-2xl border border-neutral-800 bg-neutral-800/70 p-3 text-xs leading-relaxed">${msg.content}</div>`
+            answers.innerHTML += `<div class="mr-auto rounded-2xl border border-neutral-800 bg-neutral-800/70 p-3 text-lg leading-relaxed">${msg.content}</div>`
         }
 
         answers.scrollTo({
@@ -144,13 +145,19 @@ let streamOptions = { compatibilityMode: "on", streamWarmup: true, fluent: true 
 
 async function chat_cred() {
     let val = textArea.value
-    answers.innerHTML += `<div class="max-w-[80%] ml-auto rounded-2xl bg-sky-600 text-white p-3 text-xs leading-relaxed">${val}</div>`
+    answers.innerHTML += `<div class="max-w-[80%] ml-auto rounded-2xl bg-sky-600 text-white p-3 text-lg leading-relaxed">${val}</div>`
     textArea.value = ""
     answers.scrollTo({
         top: answers.scrollHeight + 50,
         behavior: 'smooth'
     });
     let response_text = await send_to_backend(val)
+    let profile = get_user_profile().then((profile) => {
+        console.log("User Profile:", profile);
+        // Call the API to update UI
+        renderUserWorkoutProfile(profile);
+    });
+    console.log(profile);
 
     // Supports a minimum of 3 characters
     if (val !== "" && val.length > 2) {
@@ -226,4 +233,8 @@ console.log("Stream Type:", streamType)
 
 async function send_to_backend(user_input) {
     return getGptResponse(user_input);
+}
+
+async function get_user_profile() {
+    return getStructuredResponse(UserWorkoutProfile);
 }
