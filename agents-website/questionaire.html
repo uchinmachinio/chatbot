@@ -1,91 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Questionnaire</title>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/shoelace.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/themes/light.css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-        <script type="module" src="/questionaire.js"></script>
 
-  </head>
-  <body class="bg-gray-100 min-h-screen">
-    <!-- Fullscreen Grid -->
-    <div class="h-screen grid grid-cols-3 gap-6 p-6">
-      
-      <!-- Avatar Section (Left) -->
-<div class="bg-white rounded-lg shadow flex h-full">
-  <div class="flex-1 flex flex-col items-center justify-start p-6">
-    
-    <!-- Header -->
-    <h2 class="text-xl font-semibold text-center mb-4">Your Fitness Coach</h2>
-    
-    <!-- Avatar Placeholder -->
-    <div class="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center">
-      <div id="video-wrapper" class="relative flex-1 video-stack rounded-xl overflow-hidden">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Questionnaire</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/shoelace.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace/dist/themes/dark.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="/questionnaire.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen sl-theme-dark">
+  <!-- Fullscreen Grid -->
+  <div class="h-screen grid grid-cols-3 gap-6 p-6">
+
+    <!-- Avatar Section (Left) -->
+    <div class="bg-white rounded-lg shadow flex h-full">
+      <div class="flex-1 flex flex-col items-center justify-start p-6">
+
+        <!-- Header -->
+        <h2 class="text-xl font-semibold text-center mb-4">Your Fitness Coach</h2>
+
+        <!-- Avatar Placeholder -->
+        <div class="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center">
+          <div id="video-wrapper" class="relative flex-1 video-stack rounded-xl overflow-hidden">
             <video id="streamVideoElement" autoplay loop style="opacity:1;"></video>
             <video id="idleVideoElement" autoplay loop style="opacity:0;"></video>
           </div>
-    </div>
-
-  </div>
-</div>
-
-
-      <!-- Chatbox Section (Middle) -->
-      <div class="flex flex-col gap-3 bg-white rounded-lg shadow p-4">
-        
-        <!-- Chat Messages -->
-        <div class="border rounded-xl p-4 flex-1 overflow-y-auto bg-gray-50">
-          <p class="text-gray-400 text-center">Chatbox Placeholder</p>
         </div>
-        
-        <!-- Input Row -->
-        <div class="flex gap-2">
-          <input
-            type="text"
-            placeholder="Type your answer..."
-            class="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-            Send
-          </button>
-        </div>
-      </div>
-
-     <!-- Step Progress Bar (Right) -->
-<div class="bg-white rounded-lg shadow flex items-center justify-center">
-  <div class="flex flex-col items-center py-8">
-    
-    <!-- Step 1 -->
-    <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">1</div>
-    <div class="w-1 h-12 bg-gray-300"></div>
-    
-    <!-- Step 2 -->
-    <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">2</div>
-    <div class="w-1 h-12 bg-gray-300"></div>
-    
-    <!-- Step 3 -->
-    <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">3</div>
-    <div class="w-1 h-12 bg-gray-300"></div>
-    
-    <!-- Step 4 -->
-    <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">4</div>
-    <div class="w-1 h-12 bg-gray-300"></div>
-    
-    <!-- Step 5 (last, no line after) -->
-    <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">5</div>
-
-  </div>
-</div>
 
       </div>
     </div>
-  </body>
+
+
+    <!-- Chatbox Section (Middle) -->
+    <div class="flex flex-col gap-3 bg-white rounded-lg shadow p-4">
+
+      <!-- Chat Messages -->
+      <div class="border rounded-xl p-4 flex-1 overflow-y-auto bg-gray-50">
+        <p class="text-gray-400 text-center">Chatbox Placeholder</p>
+      </div>
+
+      <!-- Input Row -->
+      <div class="flex gap-2">
+        <input type="text" placeholder="Type your answer..."
+          class="flex-1 border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+          Send
+        </button>
+      </div>
+    </div>
+
+    <!-- Step Progress Bar (Right) -->
+    <div class="bg-white rounded-lg shadow flex items-center justify-center">
+      <div class="flex flex-col items-center py-8">
+
+        <!-- Step 1 -->
+        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">1
+        </div>
+        <div class="w-1 h-12 bg-gray-300"></div>
+
+        <!-- Step 2 -->
+        <div
+          class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">2
+        </div>
+        <div class="w-1 h-12 bg-gray-300"></div>
+
+        <!-- Step 3 -->
+        <div
+          class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">3
+        </div>
+        <div class="w-1 h-12 bg-gray-300"></div>
+
+        <!-- Step 4 -->
+        <div
+          class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">4
+        </div>
+        <div class="w-1 h-12 bg-gray-300"></div>
+
+        <!-- Step 5 (last, no line after) -->
+        <div
+          class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-bold">5
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  </div>
+</body>
+
 </html>
-
-
