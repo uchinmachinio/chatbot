@@ -58,9 +58,10 @@
 
     <!-- Chatbox Section (Middle) -->
     <div
-      class="flex flex-col gap-3 col-span-5 rounded-lg border border-white/10 bg-neutral-900/60 shadow-lg p-4 backdrop-blur-sm">
+      class="flex flex-col gap-3 col-span-5 rounded-lg border border-white/10 bg-neutral-900/60 shadow-lg p-4 backdrop-blur-sm min-h-0 h-full">
+
       <!-- Chat Messages -->
-      <div class="rounded-xl p-4 flex-1 overflow-y-auto bg-neutral-900 ring-1 ring-white/10">
+      <div class="rounded-xl p-4 bg-neutral-900 ring-1 ring-white/10 flex flex-col flex-1 min-h-0">
         <div id="answersList" class="flex-1 overflow-y-auto p-3 space-y-2">
           <!-- Chat messages will be appended here -->
         </div>
@@ -70,6 +71,7 @@
       <div class="flex gap-2">
         <textarea id="textArea" placeholder="Type your answer..." autofocus
           class="flex-1 rounded-lg bg-neutral-800 text-neutral-100 placeholder:text-neutral-500 border border-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400/40"></textarea>
+
         <button id="speechButton"
           class="grid size-12 place-items-center rounded-full bg-sky-600 text-white hover:bg-sky-500"
           title="Speech to Text">
@@ -154,6 +156,7 @@
   </div>
   <!-- Questionnaire Scripts here-->
   <script type="module" src="./questionnaire_video.js" defer></script>
+  <script src="/questionnaire.js"></script>
   <script src="/webSpeechAPI.js"></script>
 </body>
 
