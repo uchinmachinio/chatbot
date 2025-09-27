@@ -50,7 +50,6 @@ export function initTrainingInfoChart(containerId) {
         } else {
             intensityEl.className = "hidden";
         }
-        console.log("SEGMENT", seg);
 
         sensors.addEventListener("workout:tick", e => {
             // e.detail = { elapsed_ms, remaining_ms, progress }
