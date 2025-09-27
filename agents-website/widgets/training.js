@@ -1,43 +1,30 @@
-// ===== 1) Your workout JSON =====
-const workout = {
-    "workout_type": "HIIT",
-    "title": "Full Body HIIT Blast",
-    "duration_min": 20,
-    "rounds": 4,
-    "intervals": [
-        {
-            "round": 1,
-            "block": [
-                { "exercise": "Burpees", "duration_sec": 40, "intensity": "high" },
-                { "exercise": "Rest", "duration_sec": 20, "intensity": "low" },
-                { "exercise": "Jump Squats", "duration_sec": 40, "intensity": "high" },
-                { "exercise": "Rest", "duration_sec": 20, "intensity": "low" },
-                { "exercise": "Mountain Climbers", "duration_sec": 40, "intensity": "high" },
-                { "exercise": "Rest", "duration_sec": 20, "intensity": "low" }
-            ]
-        }
-    ],
-    "cooldown": [
-        { "exercise": "Stretch - Hamstrings", "duration_sec": 30 },
-        { "exercise": "Stretch - Shoulders", "duration_sec": 30 }
-    ],
-    "metadata": {
-        "equipment": "bodyweight",
-        "target_zones": ["cardio", "legs", "core"],
-        "goal": "fat_burn"
-    }
-};
+import { sensors } from './sensors.js';
+import { workout } from '../workout_data.js';
 
+let progressSec = 0;
 
 export function initHIITChart(containerId) {
     const Plotly = window.Plotly;
 
+    sensors.addEventListener("workout:tick", e => {
+        // update any global timer / progress ring here
+        // e.detail = { elapsed_ms, remaining_ms, progress }
+        progressSec = e.detail.elapsed_ms / 1000;
+        if (progressSec > e.detail.p) {
+            clearInterval(sim);
+            return;
+        }
+        const { data } = tracesFor(segs, progressSec);
+        Plotly.react(chartEl, data, layoutFor(totalSec, progressSec, workout.title));
+    });
+
     // Build flattened segments (repeat the block for N rounds, then cooldown) =====
     function buildSegments(w) {
-        const colors = { 
-            work: '#EE4266', 
-            rest: '#FFD23F', 
-            cooldown: '#3BCEAC' };
+        const colors = {
+            work: '#EE4266',
+            rest: '#FFD23F',
+            cooldown: '#3BCEAC'
+        };
         const isWork = (name, intensity) =>
             intensity === 'high' && name.toLowerCase() !== 'rest';
 
@@ -181,16 +168,4 @@ export function initHIITChart(containerId) {
         displayModeBar: false,
         responsive: true,
     });
-
-    // Optional simulation
-    let progressSec = 0;
-    const sim = setInterval(() => {
-        progressSec += 1;
-        if (progressSec > totalSec) {
-            clearInterval(sim);
-            return;
-        }
-        const { data } = tracesFor(segs, progressSec);
-        Plotly.react(chartEl, data, layoutFor(totalSec, progressSec, workout.title));
-    }, 1000);
 }

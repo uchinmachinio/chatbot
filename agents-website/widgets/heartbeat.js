@@ -6,12 +6,8 @@ export function initHeartBeat(hrNowId = "hrNow", heartIconId = "heartIcon") {
   function updateHeartBeat() {
     const bpm = Number(hrNowEl.textContent.trim()) || 60;
     const interval = 60000 / bpm; // ms per beat
-
-    // Remove old animation so it resets cleanly
     heartEl.style.animation = "none";
-    // Force a reflow so the browser re-applies the animation
     void heartEl.offsetWidth;
-
     // Apply the beat animation with correct timing
     heartEl.style.animation = `heartBeat ${interval}ms infinite ease-in-out`;
   }

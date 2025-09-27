@@ -1,7 +1,7 @@
-import { HR_UPDATE_MS } from './sensors.js';
-
+const HR_UPDATE_MS = 2000;
 const Plotly = window.Plotly;
 const chartEl = document.getElementById("hrChart");
+const hrNowEl = document.getElementById("hrNow");
 const windowSec = 30, tickSec = 30, maxPoints = 2000;
 let t0 = Date.now(), lastX = 0, lastBpm = 72, raf = 0, q = [];
 
@@ -47,14 +47,12 @@ export function flush() {
     raf = 0;
 }
 
-// sensors wiring unchanged; feed ms or seconds—both work
-export function wireSensors(cb) {
-    if (window.sensors?.addEventListener) { window.sensors.addEventListener("hr", e => cb(e.detail?.ts || Date.now(), e.detail?.bpm)); return; }
-    if (window.sensors?.on) { window.sensors.on("hr", d => cb(d.ts || Date.now(), d.bpm)); return; }
-    if (typeof window.subscribeHR === "function") { window.subscribeHR((bpm, ts) => cb(ts || Date.now(), bpm)); return; }
-    let bpm = 72, t = 0;
-    setInterval(() => {
-        t += HR_UPDATE_MS; bpm += Math.sin(t / 1500) * 0.6 + (Math.random() - 0.5) * 1.2;
-        cb(Date.now(), Math.round(bpm));
-    }, HR_UPDATE_MS);
+// sensors wiring unchanged; feed ms or seconds; both work
+// NEW: simple hook into the sensor manager
+export function wireSensors(sensors) {
+  sensors.addEventListener("hr", (e) => {
+    const d = e.detail || {};
+    pushHR(d.ts || Date.now(), d.bpm);
+    hrNowEl.innerHTML = d.bpm;
+  });
 }
