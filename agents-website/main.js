@@ -10,6 +10,7 @@ import { initHeartBeat } from './widgets/heartbeat.js';
 import { sensors } from './widgets/sensors.js';
 import { workout } from './workout_data.js';
 import { WorkoutPlayer } from './widgets/workoutPlayer.js';
+import { initTrainingInfoChart } from './widgets/trainingInfo.js';
 
 // 2. Paste the 'data-client-key' in the 'auth.clientKey' variable
 // (The client-key can be fetched via the Agent embed in D-ID Studio or via the API - Create Client Key Endpoint )
@@ -32,16 +33,11 @@ let renderedMessageIds = new Set();
 let srcObject;
 let streamType;
 
-// Run widgets
-// Heart Rate Chart
+// Initialize widgets
 initHRChart(); 
-wireSensors(sensors);
-sensors.start();
-
-// Training Chart
 initHIITChart("trainingChart");
 initHeartBeat("hrNow", "heartIcon")
-// initTrainingInfoChart("trainingInfo");
+initTrainingInfoChart("trainingInfo");
 initKeyframeLoop('#keyframeImg',
     [
         { src: './widgets/animations/burpees/0.png', holdMs: 500 },
@@ -51,6 +47,10 @@ initKeyframeLoop('#keyframeImg',
         { src: './widgets/animations/burpees/4.png', holdMs: 500 },
         { src: './widgets/animations/burpees/5.png', holdMs: 500 },
     ], { fadeMs: 0, autoplay: true });
+
+// Wire sensors to widgets
+wireSensors(sensors);
+sensors.start();
 
 // Spin up the workout player
 const player = new WorkoutPlayer(sensors, workout, { tickMs: 200, loop: false });

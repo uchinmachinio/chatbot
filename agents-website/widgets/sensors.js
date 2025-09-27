@@ -196,7 +196,7 @@ sensors.addIntervalSource("hr", 2000, () => {
 
 --------------------------------------------------------------------------- */
 
-let _demoBpm = 72, _t = 0;
+let _demoBpm = 200, _t = 0;
 sensors.addIntervalSource("hr", 1000, () => {
   _t += 1000;
   _demoBpm += Math.sin(_t / 1500) * 0.6 + (Math.random() - 0.5) * 1.2;

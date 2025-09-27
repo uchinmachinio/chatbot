@@ -2,6 +2,7 @@ const HR_UPDATE_MS = 2000;
 const Plotly = window.Plotly;
 const chartEl = document.getElementById("hrChart");
 const hrNowEl = document.getElementById("hrNow");
+const hrMarkerEl = document.getElementById("hrMarker");
 const windowSec = 30, tickSec = 30, maxPoints = 2000;
 let t0 = Date.now(), lastX = 0, lastBpm = 72, raf = 0, q = [];
 
@@ -54,5 +55,8 @@ export function wireSensors(sensors) {
     const d = e.detail || {};
     pushHR(d.ts || Date.now(), d.bpm);
     hrNowEl.innerHTML = d.bpm;
+    let minHeartRate = 40;
+    let maxHeartRate = 180;
+    hrMarkerEl.style.left = Math.min(100, Math.max(0, (d.bpm - minHeartRate) / maxHeartRate * 100)) + "%";
   });
 }
