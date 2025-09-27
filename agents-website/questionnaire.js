@@ -20,7 +20,8 @@ const sysRoleQuestionnaire = {
 
 ## Onboarding Process
 
-You must collect information grouped into five categories. Questions may be asked in any order, asynchronously, but all must eventually be answered. If something is unclear or missing, gently re-ask until it’s clarified.
+You must collect information grouped into five categories. Questions may be asked in any order, even asynchronously, but all must eventually be answered. If something is unclear or missing, gently re-ask until it’s clarified.
+Eventually, all listed fields must be filled, even if estimated.
 If user is unsure, help them get to the answer by providing examples or ranges. If user still can't answer, estimate for them based on typical values.
 
 Categories of questions:
