@@ -156,14 +156,21 @@ function setStepState(profile) {
             el.style.removeProperty("color");
         }
     });
+
+    // If all steps are complete, show the button
+    const allComplete = steps.every(({ fields }) => fields.every((f) => isFilled(profile?.[f])));
+    if (allComplete) {
+        showWorkoutReadyButton();
+    } else {
+        const btn = document.getElementById("workoutReady");
+        if (btn) btn.hidden = true;
+    }
 }
 
 function showWorkoutReadyButton() {
-    const btn = document.getElementById("start-workout-btn");
-    if (btn) {
-        btn.style.display = "inline-block";
-        btn.classList.add("pop-in");
-    }
+    const btn = document.getElementById("workoutReady");
+    // Remove hidden attribute
+    if (btn) btn.hidden = false;
 }
 
 /** Main public API */
@@ -221,4 +228,5 @@ export function demo() {
         equipmentAvailable: null,
     };
     renderUserWorkoutProfile(sparse);
+    // showWorkoutReadyButton();
 }
