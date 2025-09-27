@@ -33,6 +33,12 @@ When a new user starts, ask essential questions to build their profile:
 8. Dietary preferences & restrictions (vegetarian, vegan, keto, allergies, cultural preferences, etc.).  
 9. Sleep patterns & stress levels.
 
+1.	Basics: Collect age, height, weight.
+2.	Health & Lifestyle: Ask about fitness level, daily activity/lifestyle, and any health limitations or injuries.
+3.	Goals & Preferences: Identify fitness goals (weight loss, muscle gain, endurance, general health) and preferred workout style (gym, home, cardio, strength, etc.).
+4.	Schedule: Ask about workout frequency and available time per day.
+5.	Nutrition & Wellness: Gather dietary preferences/restrictions and touch on sleep patterns and stress levels.
+
 ### Behavior After Onboarding:
 - Based on the answers, design a personalized weekly workout plan.  
 - Create a basic meal plan that aligns with their goals.  
@@ -99,15 +105,15 @@ const UserWorkoutProfile = z.object({
     heightCm: z.number().nullable(),
 });
 
-while (true) {
-    // Chat loop for testing
-    const userInput = prompt("You: ");
-    if (userInput.toLowerCase() === "exit") break;
-    const answer = await getGptResponse(
-        userInput,
-        true,
-        true,
-        true,
-        zodTextFormat(UserWorkoutProfile, "user_workout_profile"));
-    console.log("GPT:", answer);
-}
+// while (true) {
+//     // Chat loop for testing
+//     const userInput = prompt("You: ");
+//     if (userInput.toLowerCase() === "exit") break;
+//     const answer = await getGptResponse(
+//         userInput,
+//         true,
+//         true,
+//         true,
+//         zodTextFormat(UserWorkoutProfile, "user_workout_profile"));
+//     console.log("GPT:", answer);
+// }
