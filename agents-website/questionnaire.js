@@ -23,7 +23,7 @@ Your goal is to create a personalized fitness and nutrition plan for each user a
 
 ### Onboarding Process:
 When a new user starts, ask essential questions to build their profile:
-1. Age, height, weight, gender.  
+1. Name, Age, height, weight, gender.  
 2. Current fitness level (beginner, intermediate, advanced).  
 3. Lifestyle (active, sedentary, office work, etc.).  
 4. Health limitations or injuries.  
@@ -61,49 +61,130 @@ When a new user starts, ask essential questions to build their profile:
 const conversation = [sysRoleQuestionnaire];
 
 // ---- GPT response utility ----
-export async function getGptResponse(inputText, saveUser = true, saveAnswer = true, isStructured = false, structure = null) {
-    if (saveUser) {
+export async function getGptResponse(inputText) {
         conversation.push({ role: "user", content: inputText });
-    }
 
     const response = await client.responses.create({
         model: "gpt-4.1-mini",
         input: conversation,
     });
 
-    if (isStructured && structure) {
-        // Replace system role with structured role
-        conversation[0] = {
-            role: "system",
-            content: `You are an expert at structured data extraction. You will be given a conversation between a user and an assistant.
-Your task is to extract the relevant information from the conversation and format it according to the provided structure.
-It is very important that you strictly follow the structure and do not add any additional information. If some information cannot be found about the user, return null for that field.`,
-        }
-        const structuredResponse = await client.responses.parse({
-            model: "gpt-4.1-mini",
-            input: conversation,
-            text: {
-                format: structure,
-            },
-        });
-        console.log("Structured response:", structuredResponse.output_parsed);
-        conversation[0] = sysRoleQuestionnaire; // revert back to original system role
-    }
-
     // The new Responses API gives you the text directly:
     const assistantText = response.output_text;
-
-    if (saveAnswer)
-        conversation.push({ role: "assistant", content: assistantText || "" });
-
     return assistantText;
 }
 
-const UserWorkoutProfile = z.object({
-    name: z.string().nullable(),
-    age: z.number().nullable(),
-    heightCm: z.number().nullable(),
-});
+export async function getStructuredResponse(structure) {
+
+    // Replace system role with structured role
+    conversation[0] = {
+        role: "system",
+        content: `You are an expert at structured data extraction. You will be given a conversation between a user and an assistant.
+Your task is to extract the relevant information from the conversation and format it according to the provided structure.
+It is very important that you strictly follow the structure and do not add any additional information. If some information cannot be found about the user, return null for that field.`,
+    }
+    const structuredResponse = await client.responses.parse({
+        model: "gpt-4.1-mini",
+        input: conversation,
+        text: {
+            format: structure,
+        },
+    });
+    console.log("Structured response:", structuredResponse.output_parsed);
+    conversation[0] = sysRoleQuestionnaire; // revert back to original system role
+    return structuredResponse.output_parsed;
+}
+
+/** --- Enums & helpers --- */
+const Gender = z.enum([
+    "male",
+    "female",
+    "nonbinary",
+    "other",
+    "prefer_not_to_say",
+]);
+
+const FitnessLevel = z.enum(["beginner", "intermediate", "advanced"]);
+
+const Lifestyle = z.enum([
+    "sedentary",
+    "lightly_active",
+    "active",
+    "very_active",
+    "shift_worker",
+    "office_work",
+    "mixed",
+]);
+
+const WorkoutStyle = z.enum([
+    "gym",
+    "home",
+    "bodyweight",
+    "cardio",
+    "strength_training",
+    "hiit",
+    "mobility",
+    "yoga_pilates",
+    "sports",
+]);
+
+const Goal = z.enum([
+    "weight_loss",
+    "muscle_gain",
+    "recomposition",
+    "endurance",
+    "general_health",
+    "mobility_flexibility",
+    "sport_specific",
+]);
+
+/** Use this when you want a field to always exist but allow null */
+const requiredNullableNumber = (min, max) =>
+    z.union([z.coerce.number().int().min(min).max(max), z.null()]);
+
+/** --- Main schema --- */
+export const UserWorkoutProfile = z
+    .object({
+        // 0. Name
+        name: z.union([z.string(), z.null()]),
+
+        // 1. Demographics
+        age: requiredNullableNumber(13, 120),
+        heightCm: requiredNullableNumber(100, 250),
+        weightKg: z.union([z.coerce.number().min(25).max(400), z.null()]),
+        gender: z.union([Gender, z.null()]),
+
+        // 2. Current fitness level
+        fitnessLevel: z.union([FitnessLevel, z.null()]),
+
+        // 3. Lifestyle
+        lifestyle: z.union([Lifestyle, z.null()]),
+        lifestyleNotes: z.union([z.string().min(1).max(300), z.null()]),
+
+        // 4. Health limitations / injuries
+        healthLimitations: z.union([
+            z
+                .array(
+                    z.object({
+                        name: z.string().min(1).max(80),
+                        notes: z.string().max(200).nullable().optional(),
+                        severity: z.union([z.coerce.number().int().min(1).max(5), z.null()]).optional(),
+                    })
+                )
+                .max(20),
+            z.null(),
+        ]),
+
+        // 5. Fitness goals
+        goals: z.union([z.array(Goal).min(1).max(5), z.null()]),
+        targetTimelineWeeks: z.union([z.coerce.number().int().min(2).max(104), z.null()]),
+
+        // 6. Preferred workout style
+        preferredStyles: z.union([z.array(WorkoutStyle).min(1).max(6), z.null()]),
+        equipmentAvailable: z.union([z.array(z.string().min(1).max(40)).max(30), z.null()]),
+    })
+    .strict();
+
 
 // while (true) {
 //     // Chat loop for testing
