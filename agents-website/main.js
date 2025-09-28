@@ -43,15 +43,27 @@ setInterval(() => {
 initTrainingInfoChart("trainingInfo");
 initStartWorkoutButton();
 
-initKeyframeLoop('#keyframeImg',
-    [
-        { src: './widgets/animations/burpees/0.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/1.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/2.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/3.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/4.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/5.png', holdMs: 500 },
-    ], { fadeMs: 0, autoplay: true });
+function initAnimations(exercise, holdMs) {
+  const dir = `./widgets/animations/${exercise}/`;
+  const exists = (url) => new Promise((res) => {
+    const img = new Image();
+    img.onload = () => res(true);
+    img.onerror = () => res(false);
+    img.src = url;
+  });
+
+  (async () => {
+    const frames = [];
+    for (let i = 0; ; i++) {
+      const url = `${dir}${i}.png`;
+      if (!(await exists(url))) break;
+      frames.push({ src: url, holdMs });
+    }
+    if (frames.length) initKeyframeLoop('#keyframeImg', frames, { fadeMs: 0, autoplay: true });
+  })();
+}
+
+initAnimations('burpees', 500);
 
 // Wire sensors to widgets
 wireSensors(sensors);
@@ -296,7 +308,7 @@ sensors.addEventListener("workout:init", e => {
 sensors.addEventListener("workout:round", async e => {
     // Just push the system prompt
     console.log("round start", e.detail);
-    await getGptResponse("", { type: "ROUND_START", details: e.detail }, false);
+    // await getGptResponse("", { type: "ROUND_START", details: e.detail }, false);
     // speak_announcement(announcement);
 });
 
@@ -308,7 +320,10 @@ sensors.addEventListener("workout:segment", async e => {
     let announcement = await getGptResponse("", {
         type: seg.phase === "work" ? "NEXT_EXERCISE" : seg.phase === "rest" ? "REST" : seg.phase === "cooldown" ? "COOLDOWN" : "UNKNOWN",
         exercise: seg.exercise,
-    });
+        duration_sec: Math.round(seg.seg_duration_ms / 1000),
+        intensity: seg.intensity,
+    }, true, true);
+    console.log("Announcement:", announcement);
     speak_announcement(announcement);
 });
 

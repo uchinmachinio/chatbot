@@ -106,7 +106,7 @@ export function initHIITChart(containerId) {
 
     // Layout with a clean timeline axis + a moving cursor line =====
     function layoutFor(totalSec, progressSec, title) {
-        const tick = niceTick(totalSec);
+        // const tick = niceTick(totalSec);
         return {
             // title: { text: `Current Workout: ${title}`, x: 0, font: { color: '#e5e7eb', size: 16 } },
             barmode: 'stack',
@@ -115,7 +115,7 @@ export function initHIITChart(containerId) {
                 range: [0, totalSec],
                 ticksuffix: " s",
                 tick0: 0,
-                dtick: tick,
+                dtick: 60,
                 gridcolor: 'rgba(255,255,255,0.06)',
                 tickfont: { color: '#9ca3af' },
                 zeroline: false

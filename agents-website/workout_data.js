@@ -1,18 +1,18 @@
 export const workout = {
     "workout_type": "HIIT",
     "title": "Full Body HIIT Blast",
-    "duration_min": 20,
-    "rounds": 2,
+    "duration_min": 4,
+    "rounds": 1,
     "intervals": [
         {
             "round": 1,
             "block": [
-                { "exercise": "Burpees", "duration_sec": 40, "intensity": "high" },
-                { "exercise": "Rest", "duration_sec": 20, "intensity": "low" },
-                { "exercise": "Jump Squats", "duration_sec": 40, "intensity": "high" },
-                { "exercise": "Rest", "duration_sec": 20, "intensity": "low" },
-                { "exercise": "Mountain Climbers", "duration_sec": 40, "intensity": "high" },
-                { "exercise": "Rest", "duration_sec": 20, "intensity": "low" }
+                { "exercise": "Burpees", "duration_sec": 30, "intensity": "high" },
+                { "exercise": "Rest", "duration_sec": 30, "intensity": "low" },
+                { "exercise": "Jump Squats", "duration_sec": 30, "intensity": "high" },
+                { "exercise": "Rest", "duration_sec": 30, "intensity": "low" },
+                { "exercise": "Mountain Climbers", "duration_sec": 30, "intensity": "high" },
+                { "exercise": "Rest", "duration_sec": 30, "intensity": "low" }
             ]
         }
     ],
