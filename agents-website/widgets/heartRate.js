@@ -11,7 +11,7 @@ export function initHRChart() {
         paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)",
         margin: { l: 30, r: 16, t: 8, b: 28 },
         xaxis: { type: "linear", range: [0, windowSec], autorange: false, tickmode: "linear", dtick: tickSec, tick0: 0, ticksuffix: " s", gridcolor: "rgba(255,255,255,0.06)", tickfont: { color: "#9ca3af" } },
-        yaxis: { title: "BPM", range: [lastBpm - 10, lastBpm + 10], gridcolor: "rgba(255,255,255,0.06)", ticksuffix: " ", tickfont: { color: "#9ca3af" }, titlefont: { color: "#9ca3af" } },
+        yaxis: { title: "BPM", range: [lastBpm - 40, lastBpm + 40], gridcolor: "rgba(255,255,255,0.06)", ticksuffix: " ", tickfont: { color: "#9ca3af" }, titlefont: { color: "#9ca3af" } },
         font: { color: "#e5e7eb" }, uirevision: "stream", showlegend: false,
         // title: { text: "", font: { color: "#9ca3af" }, xref: "paper", x: 0.05, y: 0.95 }
     };
@@ -43,7 +43,7 @@ export function flush() {
     const left = right < windowSec ? 0 : right - windowSec; // fixed window from start; scroll only after edge
     Plotly.relayout(chartEl, {
         "xaxis.range": [left, right],
-        "yaxis.range": [lastBpm - 10, lastBpm + 10]
+        "yaxis.range": [lastBpm - 40, lastBpm + 40]
     });
     raf = 0;
 }

@@ -7,7 +7,7 @@ import { initHRChart, wireSensors, pushHR } from './widgets/heartRate.js';
 import { initHIITChart } from './widgets/training.js';
 import { initKeyframeLoop } from './widgets/animator.js';
 import { initHeartBeat } from './widgets/heartbeat.js';
-import { sensors } from './widgets/sensors.js';
+import { sensors, setTargetBpm} from './widgets/sensors.js';
 import { workout } from './workout_data.js';
 import { WorkoutPlayer } from './widgets/workoutPlayer.js';
 import { initTrainingInfoChart } from './widgets/trainingInfo.js';
@@ -39,7 +39,7 @@ initHIITChart("trainingChart");
 const updater = initHeartBeat("hrNow", "heartIcon")
 setInterval(() => {
     updater(); // Update heartbeat animation speed
-}, 5); // every 1s
+}, 5000); // every 5s
 initTrainingInfoChart("trainingInfo");
 initStartWorkoutButton();
 
@@ -59,11 +59,13 @@ function initAnimations(exercise, holdMs) {
       if (!(await exists(url))) break;
       frames.push({ src: url, holdMs });
     }
+
+    console.log(`Loaded ${frames.length} frames for ${exercise}: ${frames.map(f => f.src).join(", ")}`);
     if (frames.length) initKeyframeLoop('#keyframeImg', frames, { fadeMs: 0, autoplay: true });
   })();
 }
 
-initAnimations('burpees', 500);
+// initAnimations('burpees', 500);
 
 // Wire sensors to widgets
 wireSensors(sensors);
@@ -323,10 +325,23 @@ sensors.addEventListener("workout:segment", async e => {
         duration_sec: Math.round(seg.seg_duration_ms / 1000),
         intensity: seg.intensity,
     }, true, true);
+    initAnimations(seg.exercise.toLowerCase(), 500);
+    if (seg.phase === "work") {
+        setTargetBpm(160 + Math.random() * 20, 30000);  // Over 30s
+    } else if (seg.phase === "rest" || seg.phase === "cooldown") {
+        setTargetBpm(120 + Math.random() * 10, 20000);  // Over 20s
+    }
     console.log("Announcement:", announcement);
     speak_announcement(announcement);
 });
 
+sensors.addEventListener("workout:done", async e => {
+    console.log("workout done", e.detail);
+    let announcement = await getGptResponse("", { type: "WORKOUT_COMPLETE" }, true, true);
+    // console.log("Announcement:", announcement);
+    speak_announcement(announcement);
+    document.getElementById("startButton").disabled = false;
+});
 // Greet user based and explain workout routine. Ask for readiness to begin.
 // If user is ready, start narrating workout with announcements for each exercise, rest periods, and encouragement.
 // 

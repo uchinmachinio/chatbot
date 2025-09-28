@@ -196,9 +196,32 @@ sensors.addIntervalSource("hr", 2000, () => {
 
 --------------------------------------------------------------------------- */
 
-let _demoBpm = 200, _t = 0;
+let _demoBpm = 70;
+let _t = 0;
+let _targetBpm = _demoBpm;
+let _stepPerTick = 0;
+
+// Function to call externally
+export function setTargetBpm(newValue, durationMs = 3000) {
+  _targetBpm = newValue;
+  const diff = _targetBpm - _demoBpm;
+  const ticks = Math.max(1, Math.floor(durationMs / 1000));
+  _stepPerTick = diff / ticks;
+}
+
+// Interval source for sensors
 sensors.addIntervalSource("hr", 1000, () => {
   _t += 1000;
-  _demoBpm += Math.sin(_t / 1500) * 0.6 + (Math.random() - 0.5) * 1.2;
+
+  // Slowly move toward target
+  if (Math.abs(_targetBpm - _demoBpm) > Math.abs(_stepPerTick)) {
+    _demoBpm += _stepPerTick;
+  } else {
+    _demoBpm = _targetBpm;
+  }
+
+  // Add small oscillation + noise
+  _demoBpm += Math.sin(_t / 1500) * 5 + (Math.random() - 0.5) * 5;
+
   return { bpm: Math.round(_demoBpm) };
 }, { autoStart: false, jitter: false });

@@ -5,6 +5,7 @@ export function initHeartBeat(hrNowId = "hrNow", heartIconId = "heartIcon") {
 
   function updateHeartBeat() {
     const bpm = Number(hrNowEl.textContent.trim()) || 60;
+    console.log(bpm);
     const interval = 60000 / bpm; // ms per beat
     heartEl.style.animation = "none";
     void heartEl.offsetWidth;
