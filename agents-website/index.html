@@ -138,7 +138,7 @@
                   <div class="text-[11px] uppercase tracking-wider text-slate-400">Now</div>
                   <div class="text-xl sm:text-2xl font-bold leading-tight">
                     <span id="exercise">Burpees</span>
-                    <sl-progress-ring id="timeLeftProgress" value="80" class="inline-block align-middle"
+                    <sl-progress-ring id="timeLeftProgress" value="100" class="inline-block align-middle"
                       style="--size: 30px; --track-width: 12px; --indicator-width: 6px;">
                     </sl-progress-ring>
                   </div>
@@ -199,6 +199,15 @@
               <div class="text-[11px] text-slate-400">Goal: <span id="stepsGoal">10,000</span></div>
             </div>
           </div>
+
+          <!-- Simple circular Start button -->
+          <button id="startButton" type="button" aria-label="Start" class="grid place-items-center rounded-full size-20 bg-emerald-600 text-white 
+         shadow-lg ring-1 ring-white/10 hover:bg-emerald-500 
+         active:scale-[0.98] transition disabled:opacity-40 
+         disabled:cursor-not-allowed">
+            <!-- Use Shoelace icon if available; fallback text keeps it simple -->
+            <sl-icon name="play-fill" class="text-white text-lg size-10"></sl-icon>
+          </button>
         </div>
       </section>
     </main>

@@ -1,6 +1,6 @@
 // 1. Import the Agents SDK library
 import { createAgentManager, StreamType } from '@d-id/client-sdk';
-import { getGptResponse } from './backend.js';
+import { getGptResponse, conversation } from './backend.js';
 
 // Import widgets here
 import { initHRChart, wireSensors, pushHR } from './widgets/heartRate.js';
@@ -34,10 +34,15 @@ let srcObject;
 let streamType;
 
 // Initialize widgets
-initHRChart(); 
+initHRChart();
 initHIITChart("trainingChart");
-initHeartBeat("hrNow", "heartIcon")
+const updater = initHeartBeat("hrNow", "heartIcon")
+setInterval(() => {
+    updater(); // Update heartbeat animation speed
+}, 5); // every 1s
 initTrainingInfoChart("trainingInfo");
+initStartWorkoutButton();
+
 initKeyframeLoop('#keyframeImg',
     [
         { src: './widgets/animations/burpees/0.png', holdMs: 500 },
@@ -54,7 +59,7 @@ sensors.start();
 
 // Spin up the workout player
 const player = new WorkoutPlayer(sensors, workout, { tickMs: 200, loop: false });
-player.start();
+// player.start();
 
 // Define the SDK callbacks functions here
 const callbacks = {
@@ -92,7 +97,7 @@ const callbacks = {
             document.addEventListener('keydown', (event) => { if (event.key === 'Tab') { event.preventDefault(); switchModes() } })
             actionButton.removeAttribute("disabled")
             speechButton.removeAttribute("disabled")
-            answers.innerHTML += `<div class="rounded-xl bg-neutral-800/60 p-3 text-xs">${agentManager.agent.greetings[0]}</div>`
+            answers.innerHTML += `<div class="rounded-xl bg-neutral-800/60 p-3 text-lg">${agentManager.agent.greetings[0]}</div>`
             if (streamType !== StreamType.Fluent) {
                 videoWrapper.style.filter = "blur(0px)"
             }
@@ -145,7 +150,7 @@ const callbacks = {
         if (msg.role == "assistant" && type == "answer") {
             if (msg.id && renderedMessageIds.has(msg.id)) return;
             if (msg.id) renderedMessageIds.add(msg.id);
-            answers.innerHTML += `<div class="mr-auto rounded-2xl border border-neutral-800 bg-neutral-800/70 p-3 text-xs leading-relaxed">${msg.content}</div>`
+            answers.innerHTML += `<div class="mr-auto rounded-2xl border border-neutral-800 bg-neutral-800/70 p-3 text-lg leading-relaxed">${msg.content}</div>`
         }
 
         answers.scrollTo({
@@ -177,7 +182,7 @@ let streamOptions = { compatibilityMode: "on", streamWarmup: true, fluent: true 
 
 async function chat_cred() {
     let val = textArea.value
-    answers.innerHTML += `<div class="max-w-[80%] ml-auto rounded-2xl bg-sky-600 text-white p-3 text-xs leading-relaxed">${val}</div>`
+    answers.innerHTML += `<div class="max-w-[80%] ml-auto rounded-2xl bg-sky-600 text-white p-3 text-lg leading-relaxed">${val}</div>`
     textArea.value = ""
     answers.scrollTo({
         top: answers.scrollHeight + 50,
@@ -195,6 +200,16 @@ async function chat_cred() {
         )
     }
 }
+
+function speak_announcement(text) {
+    let speak = agentManager.speak(
+        {
+            type: "text",
+            input: text,
+        }
+    )
+}
+
 
 // agentManager.interrupt() -> Interrupts the Agent's response - Only supported for Fluent architecture + Premium+ Avatars.
 function interrupt() {
@@ -260,3 +275,45 @@ console.log("Stream Type:", streamType)
 async function send_to_backend(user_input) {
     return getGptResponse(user_input);
 }
+
+function initStartWorkoutButton() {
+    document.getElementById("startButton").addEventListener("click", startWorkout);
+}
+
+async function startWorkout() {
+    console.log("Starting workout...");
+    document.getElementById("startButton").disabled = true;
+    player.start();
+    // Just push the system prompt
+    await getGptResponse("", { type: "START_WORKOUT" }, false);
+    // speak_announcement("Starting workout now.");
+}
+
+sensors.addEventListener("workout:init", e => {
+    // getGptResponse("", JSON.stringify({ type: "WORKOUT_INIT", details: e.detail }));
+});
+
+sensors.addEventListener("workout:round", async e => {
+    // Just push the system prompt
+    console.log("round start", e.detail);
+    await getGptResponse("", { type: "ROUND_START", details: e.detail }, false);
+    // speak_announcement(announcement);
+});
+
+sensors.addEventListener("workout:segment", async e => {
+    // Conversation so far
+    console.log(conversation)
+    console.log("segment", e.detail);
+    let seg = e.detail;
+    let announcement = await getGptResponse("", {
+        type: seg.phase === "work" ? "NEXT_EXERCISE" : seg.phase === "rest" ? "REST" : seg.phase === "cooldown" ? "COOLDOWN" : "UNKNOWN",
+        exercise: seg.exercise,
+    });
+    speak_announcement(announcement);
+});
+
+// Greet user based and explain workout routine. Ask for readiness to begin.
+// If user is ready, start narrating workout with announcements for each exercise, rest periods, and encouragement.
+// 
+
+

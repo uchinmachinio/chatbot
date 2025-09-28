@@ -5,7 +5,7 @@
 // + sensors.addEventListener("workout:meta",  e => console.log("META", e.detail));
 // sensors.addEventListener("workout:round", e => console.log("ROUND", e.detail));
 // sensors.addEventListener("workout:segment", e => console.log("SEG", e.detail));
-// + sensors.addEventListener("workout:tick", e => {
+// sensors.addEventListener("workout:tick", e => {
 // update any global timer / progress ring here
 // e.detail = { elapsed_ms, remaining_ms, progress }
 // });
