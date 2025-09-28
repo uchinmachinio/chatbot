@@ -40,12 +40,12 @@ initHeartBeat("hrNow", "heartIcon")
 initTrainingInfoChart("trainingInfo");
 initKeyframeLoop('#keyframeImg',
     [
-        { src: './widgets/animations/burpees/0.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/1.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/2.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/3.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/4.png', holdMs: 500 },
-        { src: './widgets/animations/burpees/5.png', holdMs: 500 },
+        { src: './widgets/animations/jumping_squats/jumping_squats1.png', holdMs: 500 },
+        { src: './widgets/animations/jumping_squats/jumping_squats2.png', holdMs: 500 },
+        { src: './widgets/animations/leg_stretch/leg_stretch1.png', holdMs: 500 },
+        { src: './widgets/animations/leg_stretch/leg_stretch2.png', holdMs: 500 },
+        { src: './widgets/animations/mountain_climber/mountain1.png', holdMs: 500 },
+        { src: './widgets/animations/mountain_climber/mountain1.png', holdMs: 500 },
     ], { fadeMs: 0, autoplay: true });
 
 // Wire sensors to widgets
