@@ -203,25 +203,43 @@ let _stepPerTick = 0;
 
 // Function to call externally
 export function setTargetBpm(newValue, durationMs = 3000) {
-  _targetBpm = newValue;
-  const diff = _targetBpm - _demoBpm;
-  const ticks = Math.max(1, Math.floor(durationMs / 1000));
-  _stepPerTick = diff / ticks;
+    _targetBpm = newValue;
+    const diff = _targetBpm - _demoBpm;
+    const ticks = Math.max(1, Math.floor(durationMs / 1000));
+    _stepPerTick = diff / ticks;
 }
 
 // Interval source for sensors
 sensors.addIntervalSource("hr", 1000, () => {
-  _t += 1000;
+    _t += 1000;
 
-  // Slowly move toward target
-  if (Math.abs(_targetBpm - _demoBpm) > Math.abs(_stepPerTick)) {
-    _demoBpm += _stepPerTick;
-  } else {
-    _demoBpm = _targetBpm;
-  }
+    // Slowly move toward target
+    if (Math.abs(_targetBpm - _demoBpm) > Math.abs(_stepPerTick)) {
+        _demoBpm += _stepPerTick;
+    } else {
+        _demoBpm = _targetBpm;
+    }
 
-  // Add small oscillation + noise
-  _demoBpm += Math.sin(_t / 1500) * 5 + (Math.random() - 0.5) * 5;
+    // Add small oscillation + noise
+    _demoBpm += Math.sin(_t / 1500) * 5 + (Math.random() - 0.5) * 5;
 
-  return { bpm: Math.round(_demoBpm) };
+    return { bpm: Math.round(_demoBpm) };
+}, { autoStart: false, jitter: false });
+
+let _calories = 0.0;
+let _maxCalories = 500.0; // Example max for the session
+let _increaseTime = 120 * 60 * 1000; // 120 minutes to reach max
+let _caloriesPerTick = _maxCalories / (_increaseTime / 5000); // per 5 seconds
+
+export function startCalories() {
+    _increaseTime = 4 * 60 * 1000; // Reset increase time
+    _caloriesPerTick = _maxCalories / (_increaseTime / 5000);
+}
+
+sensors.addIntervalSource("calories", 5000, () => {
+    if (_calories < _maxCalories) {
+        _calories += _caloriesPerTick;
+        if (_calories > _maxCalories) _calories = _maxCalories;
+    }
+    return { calories: Math.round(_calories) };
 }, { autoStart: false, jitter: false });

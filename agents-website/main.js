@@ -7,10 +7,11 @@ import { initHRChart, wireSensors, pushHR } from './widgets/heartRate.js';
 import { initHIITChart } from './widgets/training.js';
 import { initKeyframeLoop } from './widgets/animator.js';
 import { initHeartBeat } from './widgets/heartbeat.js';
-import { sensors, setTargetBpm} from './widgets/sensors.js';
+import { sensors, setTargetBpm, startCalories} from './widgets/sensors.js';
 import { workout } from './workout_data.js';
 import { WorkoutPlayer } from './widgets/workoutPlayer.js';
 import { initTrainingInfoChart } from './widgets/trainingInfo.js';
+import { initCaloriesWidget } from './widgets/calories.js';
 
 // 2. Paste the 'data-client-key' in the 'auth.clientKey' variable
 // (The client-key can be fetched via the Agent embed in D-ID Studio or via the API - Create Client Key Endpoint )
@@ -41,6 +42,7 @@ setInterval(() => {
     updater(); // Update heartbeat animation speed
 }, 5000); // every 5s
 initTrainingInfoChart("trainingInfo");
+initCaloriesWidget();
 initStartWorkoutButton();
 
 function initAnimations(exercise, holdMs) {
@@ -297,6 +299,7 @@ function initStartWorkoutButton() {
 async function startWorkout() {
     console.log("Starting workout...");
     document.getElementById("startButton").disabled = true;
+    startCalories();
     player.start();
     // Just push the system prompt
     await getGptResponse("", { type: "START_WORKOUT" }, false);
