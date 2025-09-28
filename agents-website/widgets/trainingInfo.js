@@ -53,14 +53,15 @@ export function initTrainingInfoChart(containerId) {
 
         sensors.addEventListener("workout:tick", e => {
             // e.detail = { elapsed_ms, remaining_ms, progress }
-            let elapsedSec = Math.round(e.detail.elapsed_ms / 1000);
             let startSec = Math.round(seg.seg_start_ms / 1000);
+            let elapsedSec = Math.round(e.detail.elapsed_ms / 1000) - startSec;
             let endSec = Math.round(seg.seg_end_ms / 1000);
             let segDurationSec = endSec - startSec;
-            let remainingSec = endSec - elapsedSec;
+            let remainingSec = endSec - Math.round(e.detail.elapsed_ms / 1000);
             const mins = Math.floor(remainingSec / 60);
             const secs = remainingSec % 60;
             timeLeftEl.textContent = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+            // console.log('elapsed, duration, progress:', elapsedSec, segDurationSec, (elapsedSec / segDurationSec));
             let progressPercent = Math.round((elapsedSec / segDurationSec) * 100);
             timeLeftProgress.value = progressPercent;
         });
